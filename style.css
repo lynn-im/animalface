@@ -468,6 +468,10 @@ input:checked + label > .knob > i:before {
     font-size: 1.2rem;
 }
 
+.youtube-link {
+    font-size: 0.5rem;
+}
+
 
 
 
