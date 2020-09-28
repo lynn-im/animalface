@@ -18,23 +18,20 @@
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="favicon.ico" type="image/x-icon"/>
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <script
-            type="text/javascript"
-            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f6a23a0aacab403"
-        ></script>
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f6a23a0aacab403"></script>
     </head>
+    
     <body>
         <!-- ad1 -->
         <script src="//ap.lijit.com/www/delivery/fpi.js?z=588861&width=728&height=90"></script> 
+        
         <section class="section">
-            
             <h1 class="title"><img src="img/cat.png" width=80 height=80 /> What Animal Do I Look Like? <img src="img/dog.png" width=80 height=80 /></h1>
             <h2 class="subtitle">Take this test to find out what type of animal face you have!</h2>
-
-            <!--<h2 class="subtitle">Animal look alike face-recognition app</h2>-->
         </section>
         
         <h3 class="pb-2 pt-5 d-flex justify-content-center">Please select your gender</h3>
+        
         <section class="pb-3 d-flex justify-content-center">
             <p class="d-flex align-items-center pr-3">Female</p>
             <div>
@@ -52,27 +49,25 @@
         
         <div class="mt-3 container file-upload">
             <div class="image-upload-wrap">
+                <!-- 1. upload a photo  2. call the "readURL" function when there's a change in the input -->
                 <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*" />
                 <div class="drag-text">
                     <img src="img/humantoanimal.png" class="mt-5 pt-5 upload" style="width: 30%;" />
-                    <h3 class="mb-5 pb-5 pt-5 upload-text">Drag and drop a file or select to add Image</h3>
+                    <h3 class="mb-5 pb-5 pt-5 upload-text">Click here to add a photo of your face</h3>
                 </div>
             </div>
             <div class="file-upload-content">
                 <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-                
                 <div id="loading" class="animated bounce">
                     <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
                     <p class="text-center">AI is analyzing your photo</p>
                 </div>
-            
-                <p class="result-message"></p>
+                <p class="result-message"></p> <!-- displaying the name of the animal you look-alike the most --> 
                 <div id="label-container" class="d-flex flex-column justify-content-around"></div>
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
                 <div class="addthis_inline_share_toolbox"></div>
-
                 <div class="pt-3 image-title-wrap">
                     <button type="button p-2" class="try-again-btn" onclick="window.location.reload()">
                         <span class="try-again-text">Try New</span>
@@ -80,16 +75,24 @@
                 </div>
             </div>
         </div>
+        
+        
+        <div class="container mt-3">
+            <h5 style="text-align:center;">How does it work?</h5>
+            <p class="info" style="text-align:center;">We give your photo to our AI to find which of your features most match one of 10 different animals.</p>
+            <p class="info2" style="text-align:center;">After we show your animal look-alike, we delete the photo you added.</p>
+        </div>
+        
         <section class="youtube pb-3" id="yotube-mid-link">
             <div class="container mt-3 youtube-cover d-flex flex-row-reverse align-items-center">
                 <cite><a href="https://www.youtube.com/channel/UCQNE2JmbasNYbjGAcuBiRRg" class="youtube-link">제작도움: 조코딩 유튜브 채널</a></cite>
             </div>
         </section>
-        <!--<div id="webcam-container"></div>-->
+        
+        <!-- disqus_thread START -->
         <div class="container pt-3">
             <div id="disqus_thread"></div>
         </div>
-        
         <script>
             (function () {
                 // DON'T EDIT BELOW THIS LINE
@@ -100,11 +103,9 @@
                 (d.head || d.body).appendChild(s);
             })();
         </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <!-- disqus_thread END -->
         
-        <noscript
-            >Please enable JavaScript to view the
-            <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript
-        >
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -123,6 +124,8 @@
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"
         ></script>
+        
+        <!-- Teachable Machine JavaScript-->
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
         <script>
@@ -130,18 +133,19 @@
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        $('.image-upload-wrap').hide();
+                    reader.onload = function (e) { //when "readURL" function gets called, hide input photo box, display uploaded photo & "Try New" button 
+                        $('.image-upload-wrap').hide(); 
                         $('#loading').show();
-                        $('.file-upload-image').attr('src', e.target.result);
+                        $('.file-upload-image').attr('src', e.target.result); 
                         $('.file-upload-content').show();
                         $('.image-title').html(input.files[0].name);
                     };
 
                     reader.readAsDataURL(input.files[0]);
-                    init().then(function() {
-                        console.log('hello');
-                        predict();
+                    
+                    init().then(function() { //can use ".then()" because init has an "async" and and "await", when init function is finished loading run console, predict funcs
+                        console.log('hello'); //print "hello" to indicate init function has been finished loading 
+                        predict(); //call predict function after init function has been finished loading 
                         $('#loading').hide();
                     });
                 } else {
@@ -168,29 +172,35 @@
             const urlMale = "https://teachablemachine.withgoogle.com/models/o9D1N5TN/";
             const urlFemale = "https://teachablemachine.withgoogle.com/models/bB3YHn5r/";
             let model, webcam, labelContainer, maxPredictions;
-            async function init() {
+            async function init() { //call the model from the Teachable Machine
                 if (document.getElementById("gender").checked) {
                     URL = urlMale;
                 } else {
                     URL = urlFemale;
                 }
+                
+                //load the model and metadata
                 const modelURL = URL + "model.json";
                 const metadataURL = URL + "metadata.json";
+                //Refer to tmImage.loadFromFiles() in the API to support files from a file picker or files from your local and hard drive
                 model = await tmImage.load(modelURL, metadataURL);
                 maxPredictions = model.getTotalClasses();
+                //Create labelContainer to show the look-alikeness probability in the form of dog: 0.00, cat: 1.00, etc. 
                 labelContainer = document.getElementById("label-container");
                 for (let i = 0; i < maxPredictions; i++) {
-                    var element = document.createElement("div")
+                    var element = document.createElement("div") //append label-container as a div
                     element.classList.add("d-flex");
                     labelContainer.appendChild(element);
                 }
             }
             
+            //Display the look-alikeness 
             async function predict() {
                 var image = document.getElementById("face-image")
-                const prediction = await model.predict(image, false);
+                const prediction = await model.predict(image, false); //perform prediction and save it in the prediction var. 
+                //prediction looks like this: {className: dog, probability: 0.00} --> sort probability in ascending order 
                 prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
-                console.log(prediction[0].className);
+                console.log(prediction[0].className); //display the most look-alike animal
                 var resultTitle, resultExplain, resultCeleb;
                 if (document.getElementById("gender").checked) {
                     switch (prediction[0].className) {
@@ -252,7 +262,7 @@
                 //var celeb = "<div class='" + prediction[0].className + "-animal-celeb pt-2 pb-2'>" + resultCeleb + "</div>"
                 
                 //$('.result-message').html(title + explain + celeb);
-                $('.result-message').html(title + explain);
+                $('.result-message').html(title + explain); //Put result msg of the most look-alike animal inside of the result-message tag in HTML
                 
                 var barWidth;
                 for (let i = 0; i < maxPredictions; i++) {
@@ -293,7 +303,7 @@
                     }
                     var label = "<div class='animal-label d-flex align-items-center'>" + labelTitle + "</div>"
                     var bar = "<div class='bar-container position-relative container'><div class='" + prediction[i].className + "-box'></div><div class='d-flex justify-content-center align-items-center " + prediction[i].className + "-bar' style='width: " + barWidth + "'><span class='d-block percent-text'>" + Math.round(prediction[i].probability.toFixed(2) * 100) + "%</span></div></div>"
-                    labelContainer.childNodes[i].innerHTML = label + bar;
+                    labelContainer.childNodes[i].innerHTML = label + bar; //instead of just displaying numbers (boring), put the HTML tag and colored the tags or graphy the tags
                 }
             }
         </script>
